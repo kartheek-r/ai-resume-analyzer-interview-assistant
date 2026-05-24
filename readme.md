@@ -1,7 +1,8 @@
-# 📄 AI Resume Analyzer & Interview Assistant
+# 📑 AI Resume Analyzer & Interview Assistant
 
-An AI-powered Resume Analyzer built using Streamlit and Google Gemini API.  
-This application analyzes resumes against job descriptions and provides ATS-style feedback, skill gap analysis, and interview preparation suggestions.
+An AI-powered Resume Analyzer built using Streamlit and Google Gemini API.
+
+This application analyzes resumes against job descriptions and provides ATS-style feedback, skill gap analysis, and interview suggestions.
 
 ---
 
@@ -9,11 +10,11 @@ This application analyzes resumes against job descriptions and provides ATS-styl
 
 - Upload Resume PDF
 - Paste Job Description
-- Resume Skill Analysis
-- ATS Compatibility Check
-- Missing Skills Detection
+- ATS Compatibility Analysis
+- Skill Gap Detection
+- Resume Suggestions
 - Interview Question Suggestions
-- Clean Streamlit UI
+- Streamlit Interactive UI
 
 ---
 
@@ -23,52 +24,81 @@ This application analyzes resumes against job descriptions and provides ATS-styl
 - Streamlit
 - Google Gemini API
 - PyPDF2
-- python-dotenv
+- dotenv
 
 ---
 
 ## 📂 Project Structure
 
-resume-analyzer/
+```bash
+ai-resume-analyzer-interview-assistant/
 │
 ├── streamlit_app.py
 ├── requirements.txt
 ├── .gitignore
-├── .env
-└── README.md
+├── README.md
+└── resume-ui.jpeg
+```
+
+---
+
+## 📸 Project UI
+
+![Project UI](resume-ui.jpeg)
 
 ---
 
 ## ⚙️ Installation
 
-Clone the repository:
+### Clone Repository
 
-git clone https://github.com/your-username/resume-analyzer.git
-Move into project folder:
-Bash
-cd resume-analyzer
-Install dependencies:
-Bash
+```bash
+git clone https://github.com/kartheek-r/ai-resume-analyzer-interview-assistant.git
+```
+
+### Move into Project Folder
+
+```bash
+cd ai-resume-analyzer-interview-assistant
+```
+
+### Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### Activate Virtual Environment
+
+#### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+#### Mac/Linux
+
+```bash
+source venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
 pip install -r requirements.txt
-Run the project:
-Bash
+```
+
+---
+
+## ▶️ Run Application
+
+```bash
 streamlit run streamlit_app.py
-🔑 Environment Variables
-Create a .env file and add:
-Environment
-GOOGLE_API_KEY=your_api_key_here
-Get API key from:
-https://aistudio.google.com/app/apikey⁠�
-📸 Project UI
-Add project screenshots here.
-⚠️ Note
-Some Gemini model compatibility issues may occur due to Google API version updates.
-📌 Future Improvements
-Resume Score System
-Downloadable Analysis Report
-Multi-Resume Comparison
-AI Mock Interview Feature
-Job Recommendation System
-👨‍💻 Author
-Kartheek R
-GitHub: https://github.com/kartheek-r⁠�
+```
+
+---
+
+## 👨‍💻 Author
+
+Karthik R
+
