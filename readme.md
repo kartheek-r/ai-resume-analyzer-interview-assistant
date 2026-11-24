@@ -57,17 +57,9 @@ Dashboard with tabs + downloadable report
 
 ## 🖼️ Screenshots
 
-**Score dashboard**
-
-![Score dashboard](demo1.jpg)
-
-**Skills analysis (keyword check + AI view)**
-
-![Skills analysis](demo2.jpg)
-
-**Tailored interview questions**
-
-![Interview questions](demo3.jpg)
+![Score dashboard](Screenshot_20261124_110412.jpg)
+![Skills analysis](Screenshot_20261124_110431.jpg)
+![Interview questions](Screenshot_20261124_110445.jpg)
 
 ## ▶️ Run Locally
 
