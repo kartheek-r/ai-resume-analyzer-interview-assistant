@@ -57,7 +57,7 @@ def find_skills(text):
     t = text.lower()
     return {
         s for s in SKILLS
-        if re.search(r"(?<![a-z0-9])" + re.escape(s) + r"(?![a-z0-9])", t)
+        if re.search(r"(?<![a-z0-9])" + re.escape(s) + r"s?(?![a-z0-9])", t)
     }
 
 
