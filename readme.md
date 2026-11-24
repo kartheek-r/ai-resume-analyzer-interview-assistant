@@ -1,92 +1,83 @@
 # 📄 AI Resume Analyzer & Interview Assistant
 
-> An AI-powered all-in-one tool built with **Streamlit and Google Gemini API** that analyzes your resume against a job description — giving ATS score, missing skills, improvement tips, and tailored interview questions instantly.
+🔗 **Live Demo:** https://ai-resume-analyzer-interview-assistant-8uhvqxhrtcvvgbyktoq95v.streamlit.app/
+
+> Upload your resume, paste a job description, and get a match score, skill gaps, improvement tips, and tailored interview questions. The score combines a **keyword check computed in code** with an **AI score from Gemini**, so it isn't just an LLM guess.
 
 ---
 
-## 📌 Project Overview
+## 📌 Overview
 
-Job hunting is tough — especially when you don't know if your resume will even pass the ATS filter. This tool solves that by acting as your **personal AI career coach**: paste your job description, upload your resume, and get a full analysis in seconds.
+Most resume tools ask an LLM for a score and trust whatever comes back. This project uses two signals instead:
 
----
+1. **Keyword match (deterministic):** skills found in the job description are checked against the resume in code. It is repeatable and explainable.
+2. **AI score (Gemini):** judges overall fit, including context that keywords miss.
+
+The final score is **60% keyword match + 40% AI score**. The AI response uses **structured output** (a JSON schema validated with Pydantic), so the results always arrive in a predictable format.
 
 ## ✨ Features
 
-- 📤 Upload resume as a **PDF file**
-- 📋 Paste any **Job Description** to match against
-- 🧠 **AI-powered analysis** using Google Gemini 1.5 Flash
-- 📊 **ATS Match Score** out of 100
-- 📝 **Resume Summary** — quick overview of your profile
-- ❌ **Missing Skills** — what the JD requires that your resume lacks
-- ✅ **Suggested Improvements** — actionable tips to strengthen your resume
-- 🎤 **Interview Questions** — role-specific questions generated from your resume & JD
-
----
+- 📤 Upload a resume as a PDF
+- 📋 Paste any job description
+- 📊 **Three scores:** final match, keyword match, and AI score
+- ✅ Matched skills and ❌ missing skills from the keyword check
+- 🧠 Missing skills and gaps from the AI's point of view
+- 🛠️ Five specific resume improvement suggestions
+- 🎤 Eight role-specific interview questions based on your resume and the job description
+- ⬇️ Downloadable analysis report
+- ☁️ Deployed on Streamlit Cloud
 
 ## 🏗️ How It Works
 
 ```
-Upload Resume PDF
+Resume PDF → pypdf → resume text
+Job description (pasted)
         ↓
-PyPDF2  →  Extract text from all PDF pages
+Keyword check in code (skill list + regex)
+   → matched skills, missing skills, keyword score
         ↓
-Paste Job Description
+Gemini 3.5 Flash with a JSON schema (Pydantic)
+   → summary, AI score, missing skills, improvements, interview questions
         ↓
-Gemini 1.5 Flash  →  Analyze Resume vs JD with custom prompt
+Final score = 0.6 × keyword + 0.4 × AI
         ↓
-Returns:
-  1. Resume Summary
-  2. ATS Match Score (out of 100)
-  3. Missing Skills
-  4. Suggested Improvements
-  5. Interview Questions
-        ↓
-Results displayed in Streamlit UI
+Dashboard with tabs + downloadable report
 ```
-
----
-
-## 📂 Project Structure
-
-```
-ai-resume-analyzer-interview-assistant/
-│
-├── streamlit_app.py       # Main application
-├── requirements.txt       # Python dependencies
-├── resume-ui.jpeg         # App UI screenshot
-├── .gitignore
-└── README.md
-```
-
----
 
 ## 🛠️ Tech Stack
 
 | Component | Technology |
-|-----------|------------|
-| 🖥️ Frontend / UI | Streamlit |
-| 📄 PDF Text Extraction | PyPDF2 |
-| 🤖 AI Model | Google Gemini 1.5 Flash |
-| 🔗 AI SDK | google-generativeai |
-| 🔐 Env Management | python-dotenv |
+|---|---|
+| UI | Streamlit |
+| PDF text extraction | pypdf |
+| LLM | Google Gemini 3.5 Flash (`google-genai` SDK) |
+| Structured output | Pydantic + Gemini response schema |
+| Keyword scoring | Python `re` (regex) |
+| Hosting | Streamlit Cloud |
 
----
+## 🖼️ Screenshots
 
-## 🖼️ App UI
+**Score dashboard**
 
-![Resume Analyzer UI](resume-ui.jpeg)
+![Score dashboard](demo1.jpg)
 
----
+**Skills analysis (keyword check + AI view)**
 
-## ▶️ How to Run Locally
+![Skills analysis](demo2.jpg)
 
-### 1. Clone the Repository
+**Tailored interview questions**
+
+![Interview questions](demo3.jpg)
+
+## ▶️ Run Locally
+
+**1. Clone the repo**
 ```bash
 git clone https://github.com/kartheek-r/ai-resume-analyzer-interview-assistant.git
 cd ai-resume-analyzer-interview-assistant
 ```
 
-### 2. Create a Virtual Environment
+**2. Create a virtual environment**
 ```bash
 python -m venv venv
 
@@ -97,79 +88,46 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+**3. Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Set Up API Key
-Create a `.env` file in the root folder:
-```
-GOOGLE_API_KEY=your_google_gemini_api_key_here
-```
-> 🔑 Get your free API key at [Google AI Studio](https://aistudio.google.com/)
+**4. Add your API key**
 
-### 5. Run the App
+Get a free key from [Google AI Studio](https://aistudio.google.com/), then create `.streamlit/secrets.toml`:
+```toml
+GOOGLE_API_KEY = "your_key_here"
+```
+(Or set an environment variable named `GOOGLE_API_KEY`.)
+
+**5. Run**
 ```bash
 streamlit run streamlit_app.py
 ```
 
----
+## ☁️ Deploy on Streamlit Cloud
 
-## 📦 Requirements
+1. Push the repo to GitHub
+2. Go to [share.streamlit.io](https://share.streamlit.io) → **Create app**
+3. Select the repo, branch `main`, main file `streamlit_app.py`
+4. Under **Advanced settings → Secrets**, add `GOOGLE_API_KEY = "your_key_here"`
+5. Deploy
 
-```
-streamlit
-google-generativeai
-python-dotenv
-PyPDF2
-```
+## ⚠️ Limitations
 
----
+- Works with text-based PDFs only (scanned resumes need OCR)
+- The keyword check only knows the skills in the built-in skill list
+- The AI score can vary slightly between runs
 
-## 📊 Sample Output
+## 🔮 Future Improvements
 
-After clicking **"Analyze Resume"**, you get:
-
-| Section | What You Get |
-|---------|-------------|
-| 📝 Resume Summary | A concise overview of your profile |
-| 🎯 ATS Match Score | Score out of 100 vs the job description |
-| ❌ Missing Skills | Skills in the JD not found in your resume |
-| ✅ Suggested Improvements | Actionable tips to improve your resume |
-| 🎤 Interview Questions | Role-specific questions based on your resume & JD |
-
----
-
-## 💡 Use Cases
-
-- 🎓 Freshers tailoring resumes for specific job roles
-- 💼 Job seekers optimizing resumes for ATS systems
-- 🔄 Career switchers identifying skill gaps
-- 🧑‍💼 Anyone who wants to prepare for interviews smartly
-
----
-
-## 🔮 Future Scope
-
-- 📄 Generate a **Cover Letter** based on resume + JD
-- 💬 **Chat mode** — ask follow-up questions about your resume
-- 📊 Visual ATS score dashboard with charts
-- 🌐 Deploy on **Streamlit Cloud** for public access
-- 📥 Export analysis results as a **PDF report**
-
----
-
-## 🙌 Conclusion
-
-This project combines **PDF parsing** and **generative AI** to create a practical tool that helps job seekers understand exactly where they stand against any job description — and what to do about it. Built as a fresher looking for a job, this tool reflects a real problem solved with real AI.
-
----
+- Embedding-based skill matching, so related terms count (for example "vector search" and "vector database")
+- Cover letter generator
+- PDF export of the report
+- Support for multiple job descriptions at once
 
 ## 👨‍💻 Author
 
 **Ryalampadu Kartheek**
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kartheek-ryalampadu)
-[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:kartheekryalampadu@gmail.com)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/kartheek-r)
+[LinkedIn](https://www.linkedin.com/in/kartheek-ryalampadu) · [GitHub](https://github.com/kartheek-r)
